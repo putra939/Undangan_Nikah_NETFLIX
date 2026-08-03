@@ -443,6 +443,21 @@
     </div>
 
     <script>
+        const nama = new URLSearchParams(location.search).get("to");
+        const pesan = `
+        Assalamu'alaikum Warahmatullahi Wabarakatuh.
+
+        Tanpa mengurangi rasa hormat,
+        kami mengundang Yth. ${nama}
+        untuk menghadiri acara pernikahan kami.
+
+        ${location.href}
+        `;
+        window.open(
+        `https://wa.me/?text=${encodeURIComponent(pesan)}`,
+        "_blank"
+        );
+
         // Fungsi membuka undangan
         function openInvitation() {
             const cover = document.getElementById('cover');
