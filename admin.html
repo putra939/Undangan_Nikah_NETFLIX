@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="og:image" content="https://putra939.github.io/Undangan_Nikah_NETFLIX/assets/foto1.jpg">
+<meta property="og:image" content="https://putra939.github.io/Undangan_Nikah_NETFLIX/foto1.jpg">
 <title>UndanganKu — Admin Panel</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +51,7 @@
   .field-input, .field-textarea, .field-select {
     width: 100%;
     background: var(--surface);
-    border:  1px solid var(--line);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 11px 14px;
     font-size: 14px;
@@ -322,42 +322,6 @@
                 </div>
               </div>
               
-              <!-- Foto Mempelai -->
-              <div class="card p-7">
-                <div class="flex items-center gap-3 mb-6">
-                  <div class="w-9 h-9 rounded-lg bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)]">
-                    <i class="fa-regular fa-image text-sm"></i>
-                  </div>
-                  <div>
-                    <h2 class="font-display text-lg font-semibold leading-tight">Foto Mempelai</h2>
-                    <p class="text-xs text-[var(--muted)] mt-0.5">Gambar akan dikirim sebagai 1 pesan utuh bersama kalimat ucapan di WhatsApp</p>
-                  </div>
-                </div>
-                <div class="flex flex-col sm:flex-row items-center gap-6">
-                  <div class="w-32 h-32 rounded-2xl bg-[var(--accent-soft)] border border-[var(--line)] flex items-center justify-center overflow-hidden flex-shrink-0">
-                    <img id="photoPreview" src="" alt="Foto Mempelai" class="w-full h-full object-cover hidden" />
-                    <i id="photoPlaceholder" class="fa-regular fa-image text-3xl text-[var(--accent)]"></i>
-                  </div>
-                  <div class="flex-1 w-full">
-                    <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)" />
-                    <div class="flex flex-wrap gap-2">
-                      <button class="btn-primary" onclick="document.getElementById('photoInput').click()">
-                        <i class="fa-regular fa-upload"></i>
-                        <span>Unggah Foto</span>
-                      </button>
-                      <button class="btn-ghost" onclick="removePhoto()">
-                        <i class="fa-regular fa-trash-can"></i>
-                        <span>Hapus</span>
-                      </button>
-                    </div>
-                    <p class="text-xs text-[var(--muted)] mt-3 flex items-center gap-1.5">
-                      <i class="fa-regular fa-circle-info"></i>
-                      Format JPG/PNG, maksimal 2MB. Disarankan rasio 1:1 (persegi).
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
               <!-- Kalimat Ucapan (Gabungan) -->
               <div class="card p-7">
                 <div class="flex items-center gap-3 mb-6">
@@ -564,14 +528,12 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
   
   <script>
     // ============ STATE ============
-    // Diubah sesuai link dari screenshot yang Anda berikan
     const INVITE_URL = 'https://putra939.github.io/Undangan_Nikah_NETFLIX/';
     
     let state = {
       mempelai: {
         groom: '', bride: '',
-        message: '',
-        photo: ''
+        message: ''
       },
       guests: []
     };
@@ -596,8 +558,7 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
             mempelai: { 
               groom: parsed.mempelai?.groom || '', 
               bride: parsed.mempelai?.bride || '', 
-              message: parsed.mempelai?.message || '',
-              photo: parsed.mempelai?.photo || ''
+              message: parsed.mempelai?.message || ''
             },
             guests: parsed.guests || []
           };
@@ -655,46 +616,6 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       }
     });
     
-    function handlePhotoUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      
-      if (file.size > 2 * 1024 * 1024) {
-        showToast('Ukuran file melebihi 2MB', 'circle-exclamation');
-        event.target.value = '';
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        state.mempelai.photo = e.target.result;
-        updatePhotoPreview();
-        showToast('Foto ditambahkan. Klik Simpan Perubahan.', 'check-circle');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function removePhoto() {
-      state.mempelai.photo = '';
-      document.getElementById('photoInput').value = '';
-      updatePhotoPreview();
-      showToast('Foto dihapus. Klik Simpan Perubahan.', 'circle-info');
-    }
-
-    function updatePhotoPreview() {
-      const preview = document.getElementById('photoPreview');
-      const placeholder = document.getElementById('photoPlaceholder');
-      if (state.mempelai.photo) {
-        preview.src = state.mempelai.photo;
-        preview.classList.remove('hidden');
-        placeholder.classList.add('hidden');
-      } else {
-        preview.src = '';
-        preview.classList.add('hidden');
-        placeholder.classList.remove('hidden');
-      }
-    }
-    
     function saveMempelai() {
       state.mempelai.groom = document.getElementById('groomName').value.trim();
       state.mempelai.bride = document.getElementById('brideName').value.trim();
@@ -708,9 +629,6 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       document.getElementById('brideName').value = '';
       document.getElementById('invitationMessage').value = '';
       document.getElementById('charCount').textContent = '0';
-      state.mempelai.photo = '';
-      document.getElementById('photoInput').value = '';
-      updatePhotoPreview();
       showToast('Form dibersihkan. Klik Simpan untuk menyimpan.', 'circle-info');
     }
     
@@ -904,7 +822,7 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       });
     }
     
-    async function shareWhatsApp(id) {
+    function shareWhatsApp(id) {
       const g = state.guests.find(g => g.id === id);
       if (!g) return;
       
@@ -912,20 +830,16 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       const m = state.mempelai;
       const couple = (m.groom || m.bride) ? `${m.groom} & ${m.bride}`.trim().replace(/^&\s|&$/g, '') : 'Kami';
       
-      // Format pesan
       let msg = m.message || 'Dengan memohon rahmat dan ridho Tuhan Yang Maha Esa, kami mengundang Anda untuk hadir di acara pernikahan kami.';
       
-      // Cek apakah user menggunakan placeholder
       const hasGuestTag = msg.includes('[NAMA_TAMU]');
       const hasCoupleTag = msg.includes('[NAMA_MEMPELAI]');
       const hasLinkTag = msg.includes('[LINK_UNDANGAN]');
       
-      // Ganti placeholder dengan data asli
       msg = msg.replace(/\[NAMA_TAMU\]/g, g.name);
       msg = msg.replace(/\[NAMA_MEMPELAI\]/g, couple);
       msg = msg.replace(/\[LINK_UNDANGAN\]/g, link);
       
-      // Fallback: Jika placeholder tidak digunakan, tambahkan secara otomatis
       if (!hasGuestTag) {
         msg = `Kepada Yth: ${g.name}\n\n` + msg;
       }
@@ -936,50 +850,13 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
         msg += `\n\nKlik link berikut untuk melihat undangan:\n${link}`;
       }
       
-      // Tandai terkirim
       g.sent = true;
       saveState();
       renderGuests();
       renderLinks();
       
-      // Logika berbagi ke WhatsApp (Gambar + Teks sebagai 1 Pesan)
-      if (m.photo) {
-        try {
-          const response = await fetch(m.photo);
-          const blob = await response.blob();
-          const file = new File([blob], `undangan-${m.groom}-${m.bride}.jpg`.replace(/\s/g, ''), { type: blob.type });
-          
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            // Mobile: Gunakan Web Share API agar gambar dan teks otomatis menjadi 1 pesan utuh (caption)
-            await navigator.share({
-              title: `Undangan Pernikahan ${couple}`,
-              text: msg,
-              files: [file]
-            });
-            showToast('Undangan berhasil dibagikan', 'check-circle');
-          } else {
-            // Desktop: Download foto, lalu buka WA Web dengan teks yang sudah terisi
-            const a = document.createElement('a');
-            a.href = m.photo;
-            a.download = `foto-mempelai.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-            showToast('Foto diunduh. Silakan lampirkan manual di WhatsApp Web.', 'circle-info');
-          }
-        } catch (err) {
-          if (err.name !== 'AbortError') {
-            console.error('Share failed:', err);
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-            showToast('Membagikan teks tanpa foto', 'circle-info');
-          }
-        }
-      } else {
-        // Tanpa foto, langsung buka WhatsApp dengan teks
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-      }
+      // Langsung buka WhatsApp dengan teks ucapan
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     }
     
     function openLink(id) {
@@ -1021,7 +898,6 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       document.getElementById('brideName').value = m.bride || '';
       document.getElementById('invitationMessage').value = m.message || '';
       document.getElementById('charCount').textContent = (m.message || '').length;
-      updatePhotoPreview();
       renderGuests();
       renderLinks();
     }
@@ -1036,8 +912,7 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan 
       state.mempelai = {
         groom: 'Budi Santoso',
         bride: 'Siti Rahma',
-        message: `Kepada Yth: [NAMA_TAMU]\n\nDengan memohon rahmat dan ridho Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami.\n\n[NAMA_MEMPELAI]\n\nKlik link berikut untuk melihat undangan:\n[LINK_UNDANGAN]\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu.`,
-        photo: ''
+        message: `Kepada Yth: [NAMA_TAMU]\n\nDengan memohon rahmat dan ridho Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami.\n\n[NAMA_MEMPELAI]\n\nKlik link berikut untuk melihat undangan:\n[LINK_UNDANGAN]\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu.`
       };
       state.guests = [
         { id: 'g_demo1', name: 'Keluarga Bapak Andi Wijaya', code: 'AW1K5P', sent: true, addedAt: Date.now() },
